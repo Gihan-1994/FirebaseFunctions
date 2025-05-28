@@ -3,7 +3,9 @@ import AuthButton from "../components/authButton.tsx";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, googleProvider, facebookProvider } from "../config/firebase-config.ts";
 import { useNavigate } from "react-router-dom";
-import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import { signInWithPopup, FacebookAuthProvider } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
+
 //import { signInWithRedirect, getRedirectResult } from "firebase/auth";
 
 
@@ -26,18 +28,19 @@ const AuthScreen = () => {
             setError('');
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
-            // setSuccessMessage(`Google sign-in successful: ${user.email}`);
+            const email = user.email;
+            setGoogleEmail(email);
             setIsAuthenticated(true);
             return user;
-        } catch (error: any) {
+        } catch (error :  unknown) {
             console.error("Google Sign-In Error:", error);
             // Only show error if it's not a user cancellation
-            if (error.code === 'auth/popup-blocked') {
+            if ( error instanceof FirebaseError && error.code === 'auth/popup-blocked') {
                 console.log('Popup blocked, trying redirect...');
                 // Fallback to redirect
                 //await signInWithRedirect(auth, googleProvider);
             }
-            else if (error.code !== 'auth/popup-closed-by-user') {
+            else if (error instanceof FirebaseError && error.code !== 'auth/popup-closed-by-user') {
                 setError('Google sign-in failed. Please try again.');
             } else {
                 console.error("Sign-in error:", error);
@@ -88,6 +91,7 @@ const AuthScreen = () => {
                 // This gives you a Facebook Access Token. You can use it to access the Facebook API.
                 const credential = FacebookAuthProvider.credentialFromResult(result);
                 const accessToken = credential?.accessToken;
+                console.log(accessToken);
                 setFacebookEmail(user.email);
                 console.log(facebookEmail);
                 setIsAuthenticated(true);
