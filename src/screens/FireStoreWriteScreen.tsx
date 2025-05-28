@@ -41,7 +41,7 @@ const FireStoreWriteScreen = () => {
                     <input
                         type="text"
                         ref={idRef}
-                        value={idRef.current?.value}
+                    
                         placeholder={"Enter ID..."}
                         className='border-1 border-gray-500 rounded-md px-2 py-4 w-1/2'
                     />

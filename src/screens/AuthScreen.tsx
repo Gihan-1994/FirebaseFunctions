@@ -1,9 +1,10 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import AuthButton from "../components/authButton.tsx";
-import {createUserWithEmailAndPassword} from "firebase/auth";
-import {auth, googleProvider, facebookProvider} from "../config/firebase-config.ts";
-import {useNavigate} from "react-router-dom";
-import {signInWithPopup, GoogleAuthProvider, FacebookAuthProvider} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, googleProvider, facebookProvider } from "../config/firebase-config.ts";
+import { useNavigate } from "react-router-dom";
+import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+//import { signInWithRedirect, getRedirectResult } from "firebase/auth";
 
 
 const AuthScreen = () => {
@@ -25,14 +26,21 @@ const AuthScreen = () => {
             setError('');
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
-           // setSuccessMessage(`Google sign-in successful: ${user.email}`);
+            // setSuccessMessage(`Google sign-in successful: ${user.email}`);
             setIsAuthenticated(true);
             return user;
         } catch (error: any) {
             console.error("Google Sign-In Error:", error);
             // Only show error if it's not a user cancellation
-            if (error.code !== 'auth/popup-closed-by-user') {
+            if (error.code === 'auth/popup-blocked') {
+                console.log('Popup blocked, trying redirect...');
+                // Fallback to redirect
+                //await signInWithRedirect(auth, googleProvider);
+            }
+            else if (error.code !== 'auth/popup-closed-by-user') {
                 setError('Google sign-in failed. Please try again.');
+            } else {
+                console.error("Sign-in error:", error);
             }
             return null;
         } finally {
@@ -71,7 +79,7 @@ const AuthScreen = () => {
     // };
 
 
-    const handleFacebookSignIn =async () => {
+    const handleFacebookSignIn = async () => {
         signInWithPopup(auth, facebookProvider)
             .then((result) => {
                 // The signed-in user info.
@@ -82,7 +90,7 @@ const AuthScreen = () => {
                 const accessToken = credential?.accessToken;
                 setFacebookEmail(user.email);
                 console.log(facebookEmail);
-
+                setIsAuthenticated(true);
                 // IdP data available using getAdditionalUserInfo(result)
                 // ...
             })
@@ -179,9 +187,9 @@ const AuthScreen = () => {
                     {/* Error Message */}
                     {error && (
                         <div className='w-1/2 px-20'>
-                        <span className='text-sm font-bold text-red-600 bg-red-100 px-3 py-2 rounded-md block'>
-                            {error}
-                        </span>
+                            <span className='text-sm font-bold text-red-600 bg-red-100 px-3 py-2 rounded-md block'>
+                                {error}
+                            </span>
                         </div>
                     )}
 
@@ -238,9 +246,9 @@ const AuthScreen = () => {
                         className={`${googleEmail || facebookEmail ? 'block' : 'hidden'} text-sm font-bold text-green-700 absolute bottom-0 right-0`}>
                         {googleEmail ? `New Google email: ` : `New Facebook email: `}
                         <span className='text-amber-900'>
-                         {googleEmail || facebookEmail}
+                            {googleEmail || facebookEmail}
                         </span> added to firebase database
-                </span>
+                    </span>
                 </div>
             </div>
 
