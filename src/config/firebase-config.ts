@@ -32,3 +32,8 @@ export const db = getFirestore(firebaseApp);
 export const googleProvider = new GoogleAuthProvider();
 export const facebookProvider = new FacebookAuthProvider();
 export const functions = getFunctions(firebaseApp);
+
+connectFirestoreEmulator(db, "127.0.0.1", 8080);
+ if (!auth.emulatorConfig) {
+    connectAuthEmulator(auth, "http://127.0.0.1:9099");
+  }
