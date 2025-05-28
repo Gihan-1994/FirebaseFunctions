@@ -143,7 +143,7 @@ const AuthScreen = () => {
         }
     }, [isAuthenticated, navigate]);
 
-    const handleClar = () => {
+    const handleClear = () => {
         setEmail('');
         setPassword('');
         setConfirmPassword('');
@@ -243,7 +243,7 @@ const AuthScreen = () => {
                         loading={false}
                         variant="primary"
                         onClick={() => {
-                            handleClar()
+                            handleClear()
                         }}
                     >Cancel </AuthButton>
                     <span
