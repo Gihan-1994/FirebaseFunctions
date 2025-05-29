@@ -1,7 +1,7 @@
 import { useState, useRef } from "react"
 import AuthButton from "../components/authButton.tsx";
-import{db} from "../config/firebase-config.ts";
-import { doc, setDoc } from "firebase/firestore";
+import {fireStoreService} from "../services/fireStoreService.ts";
+
 
 const FireStoreWriteScreen = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -17,18 +17,28 @@ const FireStoreWriteScreen = () => {
                alert("Please enter an ID");
                return;
            }else {
-               await setDoc(doc(db, "Users", `${idRef.current.value}`), {
+               const userDataRef = {
                    name: nameRef.current?.value || " ",
                    age: ageRef.current?.value || " ",
                    city: cityRef.current?.value || " ",
-               });
+               };
+               const result = await fireStoreService(idRef.current.value, userDataRef);
+               if (result.success) {
+                   alert("Text written successfully");
+                   if (idRef.current) idRef.current.value = '';
+                   if (nameRef.current) nameRef.current.value = '';
+                   if (ageRef.current) ageRef.current.value = '';
+                   if (cityRef.current) cityRef.current.value = '';
+               }
            }
 
        }
        catch (error: unknown) {
-            console.log(error);
-        }
-        setIsLoading(false);
+           console.error('Firestore write error:', error);
+        }finally {
+           setIsLoading(false);
+       }
+
     }
     return (
         <div className='Relative'>

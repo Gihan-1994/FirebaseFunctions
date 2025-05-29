@@ -1,9 +1,9 @@
 import {useState, useEffect} from "react";
 import AuthButton from "../components/authButton.tsx";
-import {createUserWithEmailAndPassword} from "firebase/auth";
 import {auth, googleProvider, facebookProvider} from "../config/firebase-config.ts";
 import {useNavigate} from "react-router-dom";
-import {signInWithPopup, GoogleAuthProvider, FacebookAuthProvider} from "firebase/auth";
+import {signInWithPopup, FacebookAuthProvider } from "firebase/auth";
+import {emailAuthService} from "../services/emailAuthService.ts";
 
 
 const AuthScreen = () => {
@@ -25,10 +25,11 @@ const AuthScreen = () => {
             setError('');
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
+            setGoogleEmail(user.email);
            // setSuccessMessage(`Google sign-in successful: ${user.email}`);
             setIsAuthenticated(true);
             return user;
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Google Sign-In Error:", error);
             // Only show error if it's not a user cancellation
             if (error.code !== 'auth/popup-closed-by-user') {
@@ -110,15 +111,18 @@ const AuthScreen = () => {
         } else {
             setError('');
             setIsLoading(true);
-            createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
-
-                const user = userCredential.user;
-                console.log(user);
+            try{
+                const response = emailAuthService(email, password);
+                console.log(response);
+                setEmail('');
+                setPassword('');
+                alert('Sign up successful');
                 setIsAuthenticated(true);
-
-            }).catch((error: Error) => {
-                throw new Error(`user signup failed with error: ${error}`);
-            });
+            }
+            catch (error) {
+                console.error(error);
+                setError('An error occurred during authentication');
+            }
         }
         // Perform authentication logic here
         console.log('Email:', email);

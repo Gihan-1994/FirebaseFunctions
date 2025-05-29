@@ -8,14 +8,25 @@ const ImageUploadScreen = () => {
 
     const handleUpload =async () => {
       console.log(image);
-      try {
-        if(image){
-          const url = await uploadImage(image);
-          //console.log(url);
+
+        try {
+            if (!image) return;
+            const response = await uploadImage(image);
+            if (response.success) {
+                console.log('Image uploaded successfully:', response.url);
+                setImage(null); // Reset the image state after success
+            } else {
+                console.error('Image upload failed:', response.message);
+            }
+        } catch (error) {
+            setImage(null); // Reset the image state even on upload error
+            if (error instanceof Error) {
+                console.error('Error uploading image:', error.message);
+            } else {
+                console.error('Unknown error:', error);
+            }
         }
-      } catch (error) {
-          console.error("Upload failed:", error);
-      }
+
 
     }
     return (

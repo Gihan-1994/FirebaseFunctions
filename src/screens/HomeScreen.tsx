@@ -7,7 +7,7 @@ import {useServiceStore} from "../store/serviceStore.ts";
 const HomeScreen = () => {
     const navigate = useNavigate();
     const [title, setTitle] = useState<string>('');
-    const helloService = useServiceStore(state => state.hellofireworld);
+    const helloService = useServiceStore(state => state.hellofireWorld);
     const triggerHelloService = async () => {
         try {
             const response = await helloService()

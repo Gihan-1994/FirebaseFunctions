@@ -3,9 +3,11 @@ import { getAuth , GoogleAuthProvider, FacebookAuthProvider} from "firebase/auth
 import { getFirestore } from "firebase/firestore";
 import { getFunctions } from "firebase/functions";
 
+
 type AllCloudFunctions = {
     helloFireWorld: string,
-    api: string,
+    uploadImageFunction: string,
+    fireStoreFunction: string,
 }
 export abstract class FirebaseConfig {
     public static webFirebaseConfig:{apiKey: string, authDomain: string, projectId: string, storageBucket: string, messagingSenderId: string, appId: string} = {
@@ -20,7 +22,8 @@ export abstract class FirebaseConfig {
     public static getallFunctions ():AllCloudFunctions  {
          return {
              helloFireWorld: "http://127.0.0.1:5001/fir-authentication-efa08/us-central1/helloFireWorld",
-             api: "http://127.0.0.1:5001/fir-authentication-efa08/us-central1/api/upload",
+             uploadImageFunction: "http://127.0.0.1:5001/fir-authentication-efa08/us-central1/uploadImage",
+             fireStoreFunction: "http://127.0.0.1:5001/fir-authentication-efa08/us-central1/writeToFirestore",
          }
     }
 }

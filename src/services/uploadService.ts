@@ -1,27 +1,37 @@
 import {FirebaseConfig} from "../config/firebase-config.ts";
 
+export interface UploadResponse {
+    success: boolean;
+    filename?: string;
+    url?: string;
+    message?: string;
+    error?: string;
+}
 
-export const uploadImage = async (file: File): Promise<string> => {
-const formData = new FormData();
-formData.append('image', file);
+export const uploadImage = async (file: File): Promise<UploadResponse> => {
 
 try {
-    const response = await fetch(FirebaseConfig.getallFunctions().api, {
+    const arrayBuffer = await file.arrayBuffer();
+
+    // Call the Firebase Function directly via HTTP
+    const response = await fetch(FirebaseConfig.getallFunctions().uploadImageFunction, {
         method: 'POST',
-        body: formData,
+        headers: {
+            'Content-Type': file.type,
+            'X-Filename': file.name,
+        },
+        body: arrayBuffer,
 
     });
-    console.log("API URL:", FirebaseConfig.getallFunctions().api);
-    console.log("Uploading file:", file.name, file.size);
-
-    if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+    const result: UploadResponse = await response.json();
+    if (result.success) {
+        console.log('Upload successful:', result);
+        return result;
+    } else {
+        throw new Error(result.message || 'Unknown error occurred during upload.');
     }
-    const data = await response.json();
-    return data.data;
-
   }catch (error) {
-    return Promise.reject(error);
+    return Promise.reject('✂😥Error uploading image: ' + error);
 }
 
 }

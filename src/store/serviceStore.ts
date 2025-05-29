@@ -3,10 +3,11 @@ import {httpsCallableFromURL} from "firebase/functions";
 import {functions, FirebaseConfig} from "../config/firebase-config.ts";
 
 export interface serviceStore{
-    hellofireworld: (payload:void) => Promise<string>;
+    hellofireWorld: (payload:void) => Promise<string>;
+
 }
-export const useServiceStore = create<serviceStore>(() => ({
-    hellofireworld: async ():Promise<string> => {
+ export const useServiceStore = create<serviceStore>(() => ({
+    hellofireWorld: async ():Promise<string> => {
         try {
             const callable = httpsCallableFromURL<void, string>(
                 functions,
@@ -20,5 +21,7 @@ export const useServiceStore = create<serviceStore>(() => ({
             throw new Error(`Hello Fire World failed with error: ${error}`);
         }
 
-    }
+    },
+
 }))
+
