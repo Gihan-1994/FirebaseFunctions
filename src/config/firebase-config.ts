@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth , GoogleAuthProvider, FacebookAuthProvider, connectAuthEmulator} from "firebase/auth"
 import { getFirestore } from "firebase/firestore";
+import {getStorage ,connectStorageEmulator } from "firebase/storage";
 import { getFunctions } from "firebase/functions";
 import { connectFirestoreEmulator } from "firebase/firestore";
 
@@ -33,12 +34,12 @@ export const db = getFirestore(firebaseApp);
 export const googleProvider = new GoogleAuthProvider();
 export const facebookProvider = new FacebookAuthProvider();
 export const functions = getFunctions(firebaseApp);
+export const storage = getStorage(firebaseApp);
 
 
 
 connectFirestoreEmulator(db, "127.0.0.1", 8080);
-
-
+connectStorageEmulator(storage, "127.0.0.1", 9199);
 
  if (!auth.emulatorConfig) {
     connectAuthEmulator(auth, "http://127.0.0.1:9099");

@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import AuthButton from "../components/authButton.tsx";
-import {uploadImage} from "../services/uploadService.ts";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import {storage} from "../config/firebase-config.ts";
+
 
 const ImageUploadScreen = () => {
 
@@ -10,8 +12,16 @@ const ImageUploadScreen = () => {
       console.log(image);
       try {
         if(image){
-          const url = await uploadImage(image);
-          console.log(url);
+         // const url = await uploadImage(image);
+          //console.log(url);
+            const storageRef = ref(storage, `images/${image.name}`);
+
+            uploadBytes(storageRef, image).then((snapshot) => {
+                console.log('Uploaded a blob or file!', snapshot.ref);
+                getDownloadURL(snapshot.ref).then((downloadURL) => {
+                    console.log('File available at', downloadURL);
+                });
+            });
         }
       } catch (error) {
           console.error("Upload failed:", error);

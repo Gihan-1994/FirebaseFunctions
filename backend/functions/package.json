@@ -3,6 +3,7 @@
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
+    "kill-ports": "npx kill-port 9099 5001 8080 9000 9199 4000",
     "serve": "yarn run build && firebase emulators:start --only firestore,auth,functions,storage",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
