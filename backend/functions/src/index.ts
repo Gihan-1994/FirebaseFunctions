@@ -3,8 +3,13 @@ import {https as httpsV2} from 'firebase-functions/v2';
 import express from "express";
 import cors from "cors";
 import multer from "multer";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import {storage} from "./config/firebase-config";
+import { getDownloadURL } from "firebase-admin/storage";
+//import {storage} from "./config/firebase-config";
+import { getStorage } from "firebase-admin/storage";
+import { initializeApp } from "firebase-admin/app";
+
+initializeApp();
+const storage = getStorage();
 
 export const helloFireWorld = httpsV2.onRequest((req, res) => {
   res.json({
@@ -23,14 +28,15 @@ try {
         return;
     }
     const file = req.file;
+    console.log("Received file:", file);
     const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
     if (!allowedTypes.includes(file.mimetype)) {
         res.status(400).send("Invalid file type");
         return;
     }
 
-    const storageRef = ref(storage, `images/${file.originalname}`);
-    await uploadBytes(storageRef, file.buffer);
+    const storageRef = storage.bucket().file(`images/${file.originalname}`);
+    await storageRef.save(file.buffer);
     const downloadURL = await getDownloadURL(storageRef);
     res.status(200).send({data: downloadURL});
 } catch (error :Error | any) {

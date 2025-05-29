@@ -11,7 +11,7 @@ const ImageUploadScreen = () => {
       try {
         if(image){
           const url = await uploadImage(image);
-          console.log(url);
+          //console.log(url);
         }
       } catch (error) {
           console.error("Upload failed:", error);
