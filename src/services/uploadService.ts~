@@ -3,7 +3,7 @@ import {FirebaseConfig} from "../config/firebase-config.ts";
 export interface UploadResponse {
     success: boolean;
     filename?: string;
-    url: string;
+    url?: string;
     message?: string;
     error?: string;
 }
@@ -28,7 +28,6 @@ try {
     const result: UploadResponse = await response.json();
     if (result.success) {
         console.log('Upload successful:', result);
-        console.log('😎Image URL:', result.url);
         return result;
     } else {
         throw new Error(result.message || 'Unknown error occurred during upload.');

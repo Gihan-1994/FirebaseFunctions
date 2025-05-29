@@ -6,7 +6,7 @@ import FireStoreWriteScreen from './screens/FireStoreWriteScreen' ;
 
 function App() {
     return (
-        <body className='bg-gray-800'>
+        <section className='w-screen h-screen bg-gradient-to-r from-gray-700 to-black'>
         <Router>
             <Routes>
                 <Route path='/' element={<HomeScreen/>}/>
@@ -15,7 +15,7 @@ function App() {
                 <Route path='/FireStoreWriteScreen' element={<FireStoreWriteScreen/>}/>
             </Routes>
         </Router>
-        </body>
+        </section>
 
 
     )

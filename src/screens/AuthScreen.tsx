@@ -1,7 +1,6 @@
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import AuthButton from "../components/authButton.tsx";
 import {auth, googleProvider, facebookProvider} from "../config/firebase-config.ts";
-import {useNavigate} from "react-router-dom";
 import {signInWithPopup, FacebookAuthProvider } from "firebase/auth";
 import {emailAuthService} from "../services/emailAuthService.ts";
 import { FirebaseError } from "firebase/app";
@@ -14,9 +13,9 @@ const AuthScreen = () => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const navigate = useNavigate();
     const [googleEmail, setGoogleEmail] = useState<string | null>('');
     const [facebookEmail, setFacebookEmail] = useState<string | null>('');
+    const [authEmail, setAuthEmail] = useState<string | null>('');
 
 
 
@@ -108,6 +107,7 @@ const AuthScreen = () => {
     }
 
     const handleSubmit = () => {
+        setIsLoading(true);
         if (password !== confirmPassword) {
             setError('Passwords do not match');
             return;
@@ -119,8 +119,10 @@ const AuthScreen = () => {
                 console.log(response);
                 setEmail('');
                 setPassword('');
+                setAuthEmail(email);
                 alert('Sign up successful');
                 setIsAuthenticated(true);
+                setIsLoading(false);
             }
             catch (error) {
                 console.error(error);
@@ -132,11 +134,6 @@ const AuthScreen = () => {
         console.log('Password:', password);
         console.log('Confirm Password:', confirmPassword);
     };
-    useEffect(() => {
-        if (isAuthenticated) {
-            navigate('/');
-        }
-    }, [isAuthenticated, navigate]);
 
     const handleClar = () => {
         setEmail('');
@@ -244,11 +241,15 @@ const AuthScreen = () => {
                             handleClar()
                         }}
                     >Cancel </AuthButton>
-                    <span
-                        className={`${googleEmail || facebookEmail ? 'block' : 'hidden'} text-sm font-bold text-green-700 absolute bottom-0 right-0`}>
-                        {googleEmail ? `New Google email: ` : `New Facebook email: `}
+
+
+                </div>
+                <div className='mt-4'>
+                        <span
+                            className={`${googleEmail || facebookEmail ||authEmail ? 'block' : 'hidden'} text-lg font-bold text-green-700  `}>
+                        New  Email:
                         <span className='text-amber-900'>
-                         {googleEmail || facebookEmail}
+                         {googleEmail || facebookEmail || authEmail}
                         </span> added to firebase database
                 </span>
                 </div>

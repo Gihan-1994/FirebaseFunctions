@@ -12,6 +12,7 @@ const FireStoreWriteScreen = () => {
 
     const handleSubmit = async () => {
         setIsLoading(true);
+
        try{
            if(!idRef.current?.value) {
                alert("Please enter an ID");

@@ -41,9 +41,11 @@ export const uploadImage = onRequest(
                 //     action: "read",
                 //     expires: "03-09-2491", // Far future date
                 // });
+                // console.log("😎Image URL:", url);
 
                 response.status(200).json({
                     success: true,
+                    url:`gs://fir-authentication-efa08.firebasestorage.app/images/${filename}`,
                     filename,
                     message: "😄Image uploaded successfully",
                 });
