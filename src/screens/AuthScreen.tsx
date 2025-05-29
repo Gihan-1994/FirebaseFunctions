@@ -82,6 +82,7 @@ const AuthScreen = () => {
 
 
     const handleFacebookSignIn = async () => {
+        setIsLoading(true);
         signInWithPopup(auth, facebookProvider)
             .then((result) => {
                 // The signed-in user info.
@@ -111,7 +112,10 @@ const AuthScreen = () => {
                 console.log(credential);
 
                 // ...
+            }).finally(() => {
+                setIsLoading(false);
             });
+
     }
 
     const handleSubmit = () => {
@@ -129,7 +133,9 @@ const AuthScreen = () => {
 
             }).catch((error: Error) => {
                 throw new Error(`user signup failed with error: ${error}`);
-            });
+            }).finally(() => {
+                setIsLoading(false);
+            })
         }
         // Perform authentication logic here
         console.log('Email:', email);
