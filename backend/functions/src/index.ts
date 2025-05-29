@@ -30,7 +30,7 @@ if (!getApps().length) {
 
 export const helloFireWorld = httpsV2.onRequest((req, res) => {
     res.json({
-     data: 'Hello Fire World!',
+     data: 'Welcome to Firebase Cloud !',
     });
 });
 const corsHandler = cors({ origin: true });
