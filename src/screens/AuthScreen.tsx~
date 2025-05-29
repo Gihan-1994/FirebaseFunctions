@@ -30,7 +30,8 @@ const AuthScreen = () => {
             const user = result.user;
             setGoogleEmail(user.email);
             alert('Google Sign-in Successful');
-
+            setIsAuthenticated(true);
+            return user;
         } catch (error: unknown) {
             console.error("Google Sign-In Error:", error);
             // Only show error if it's not a user cancellation
@@ -86,7 +87,7 @@ const AuthScreen = () => {
                 console.log(accessToken);
                 setFacebookEmail(user.email);
                 console.log(facebookEmail);
-                alert('Facebook Sign-in Successful');
+
                 // IdP data available using getAdditionalUserInfo(result)
                 // ...
             })
@@ -118,7 +119,6 @@ const AuthScreen = () => {
 
                 const user = userCredential.user;
                 console.log(user);
-                alert('User created successfully');
                 setIsAuthenticated(true);
 
             }).catch((error: Error) => {

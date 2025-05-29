@@ -30,7 +30,7 @@ const ImageUploadScreen = () => {
     }
     return (
         <div className='Relative'>
-            <div  className='w-full h-full flex flex-col justify-center items-center  gap-10 py-10 mt-[200px]'>
+            <div  className='w-full h-full flex flex-col justify-center items-center  gap-10 py-10 pt-[200px]'>
                 <div className='w-1/2 h-[200px] p-5 px-20 flex flex-row flex-wrap gap-x-10 border-2 justify-between items-center bg-blue-200'>
                     <h2 className='text-2xl font-bold font-sans'>Upload Image</h2>
                     <input
@@ -44,9 +44,18 @@ const ImageUploadScreen = () => {
                         disabled = {false}
                         loading = {false}
                         variant = "secondary"
-                        colour = "green"
+                        colour = "blue"
                     >Upload</AuthButton>
 
+                </div>
+                <div className='mb-4 pb-5 '>
+                        <span
+                            className={`${image ? 'block' : 'hidden'} text-lg font-bold text-blue-700  bottom-0 right-0`}>
+                        {`new image :`}
+                            <span className='text-amber-900'>
+                           {` ${image?.name}`}
+                        </span> added to firebase Storage
+                    </span>
                 </div>
             </div>
         </div>

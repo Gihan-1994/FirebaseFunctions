@@ -10,7 +10,7 @@ function App() {
 
     return (
 
-        <section className='w-screen h-screen bg-gradient-to-r from-green-950 to-black'>
+        <section className='w-screen h-screen bg-gradient-to-r from-green-800 to-green-950'>
             <Router>
                 <Routes>
                     <Route path='/' element={<HomeScreen/>}/>

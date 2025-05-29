@@ -5,6 +5,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 const FireStoreWriteScreen = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const [loaded, setLoaded] = useState(false);
     const idRef = useRef<HTMLInputElement>(null);
     const nameRef = useRef<HTMLTextAreaElement>(null);
     const ageRef = useRef<HTMLTextAreaElement>(null);
@@ -23,7 +24,7 @@ const FireStoreWriteScreen = () => {
                    city: cityRef.current?.value || " ",
                });
            }
-
+        setLoaded(true);
        }
        catch (error: unknown) {
             console.log(error);
@@ -85,8 +86,14 @@ const FireStoreWriteScreen = () => {
                 disabled = {false}
                 loading = {isLoading}
                 variant = "secondary"
-                colour = "green"
+                colour = "blue"
             >Submit Text</AuthButton>
+            <div className='mb-4 pb-5 '>
+                        <span
+                            className={`${loaded ? 'block' : 'hidden'} text-lg font-bold text-gray-700  bottom-0 right-0`}>
+                        User Data added to Database
+                    </span>
+            </div>
         </div>
         </div>
     )
