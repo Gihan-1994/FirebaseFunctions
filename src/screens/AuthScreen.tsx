@@ -3,7 +3,7 @@ import AuthButton from "../components/authButton.tsx";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, googleProvider, facebookProvider } from "../config/firebase-config.ts";
 import { useNavigate } from "react-router-dom";
-import { signInWithPopup, FacebookAuthProvider } from "firebase/auth";
+import { signInWithPopup, FacebookAuthProvider,signInWithRedirect } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 
 //import { signInWithRedirect, getRedirectResult } from "firebase/auth";
