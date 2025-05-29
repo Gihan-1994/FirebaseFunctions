@@ -1,4 +1,3 @@
-import { FirebaseConfig } from '../config/firebase-config';
 interface AuthResponse {
     success: boolean;
     uid?: string;

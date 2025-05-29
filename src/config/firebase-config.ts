@@ -8,6 +8,7 @@ type AllCloudFunctions = {
     helloFireWorld: string,
     uploadImageFunction: string,
     fireStoreFunction: string,
+    emailAuthFunction: string
 }
 export abstract class FirebaseConfig {
     public static webFirebaseConfig:{apiKey: string, authDomain: string, projectId: string, storageBucket: string, messagingSenderId: string, appId: string} = {
@@ -24,6 +25,7 @@ export abstract class FirebaseConfig {
              helloFireWorld: "http://127.0.0.1:5001/fir-authentication-efa08/us-central1/helloFireWorld",
              uploadImageFunction: "http://127.0.0.1:5001/fir-authentication-efa08/us-central1/uploadImage",
              fireStoreFunction: "http://127.0.0.1:5001/fir-authentication-efa08/us-central1/writeToFirestore",
+             emailAuthFunction: "http://127.0.0.1:5001/fir-authentication-efa08/us-central1/emailSignupFunction"
          }
     }
 }

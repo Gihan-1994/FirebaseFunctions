@@ -4,6 +4,7 @@ import {auth, googleProvider, facebookProvider} from "../config/firebase-config.
 import {useNavigate} from "react-router-dom";
 import {signInWithPopup, FacebookAuthProvider } from "firebase/auth";
 import {emailAuthService} from "../services/emailAuthService.ts";
+import { FirebaseError } from "firebase/app";
 
 
 const AuthScreen = () => {
@@ -32,7 +33,8 @@ const AuthScreen = () => {
         } catch (error: unknown) {
             console.error("Google Sign-In Error:", error);
             // Only show error if it's not a user cancellation
-            if (error.code !== 'auth/popup-closed-by-user') {
+            if (error instanceof FirebaseError && (error.code !== 'auth/popup-closed-by-user'))
+            {
                 setError('Google sign-in failed. Please try again.');
             }
             return null;
@@ -81,6 +83,7 @@ const AuthScreen = () => {
                 // This gives you a Facebook Access Token. You can use it to access the Facebook API.
                 const credential = FacebookAuthProvider.credentialFromResult(result);
                 const accessToken = credential?.accessToken;
+                console.log(accessToken);
                 setFacebookEmail(user.email);
                 console.log(facebookEmail);
 
@@ -188,6 +191,9 @@ const AuthScreen = () => {
                         </span>
                         </div>
                     )}
+                    <span
+                        className={`${isAuthenticated ? 'block' : 'hidden'} text-sm font-bold text-green-700 absolute bottom-0  right-0`}> Authentication Successful </span>
+
 
 
 

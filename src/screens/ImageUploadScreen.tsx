@@ -2,24 +2,29 @@ import {useState} from 'react';
 import AuthButton from "../components/authButton.tsx";
 import {uploadImage} from "../services/uploadService.ts";
 
+
 const ImageUploadScreen = () => {
 
     const [image, setImage] = useState <File|null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [isUploaded, setIsUploaded] = useState<boolean>(false);
 
     const handleUpload =async () => {
       console.log(image);
-
+     setLoading(true);
         try {
             if (!image) return;
             const response = await uploadImage(image);
             if (response.success) {
                 console.log('Image uploaded successfully:', response.url);
-                setImage(null); // Reset the image state after success
+                setImage(null);
+                setLoading(false);
+                setIsUploaded(true);
             } else {
                 console.error('Image upload failed:', response.message);
             }
         } catch (error) {
-            setImage(null); // Reset the image state even on upload error
+            setImage(null);
             if (error instanceof Error) {
                 console.error('Error uploading image:', error.message);
             } else {
@@ -43,12 +48,15 @@ const ImageUploadScreen = () => {
                         type = "button"
                         onClick={handleUpload}
                         disabled = {false}
-                        loading = {false}
+                        loading = {loading}
                         variant = "secondary"
                         colour = "green"
+
                     >Upload</AuthButton>
 
                 </div>
+                <span
+                    className={`${isUploaded ? 'block' : 'hidden'} text-sm font-bold text-green-700 absolute bottom-0  right-0`}> Upload Successful </span>
             </div>
         </div>
 
