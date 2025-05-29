@@ -24,7 +24,7 @@ const HomeScreen = () => {
         <div className='Relative'>
 
         <div className='w-full flex flex-col justify-center items-center  gap-10 py-10'>
-           <h1> {title}</h1>
+            <h1 className='text-7xl font-bold font-mono text-black'> {title}</h1>
             <div className='w-1/2 h-1/4 p-5 px-20 flex flex-row gap-x-10 border-2 justify-between items-center bg-blue-200'>
                 <h2 className='text-2xl font-bold font-sans'>User Login</h2>
                 <AuthButton
