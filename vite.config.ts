@@ -10,9 +10,9 @@ export default defineConfig({
       clientPort: 5173 // Explicit WebSocket port
     },
     headers: {
-      "Access-Control-Allow-Origin": "*",
-
-      "Cross-Origin-Embedder-Policy": "unsafe-none"
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
     },
   },
 

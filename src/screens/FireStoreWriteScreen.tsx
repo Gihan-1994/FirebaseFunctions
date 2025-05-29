@@ -5,6 +5,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 const FireStoreWriteScreen = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const[uploaded, setUploaded] = useState<boolean>(false);
     const idRef = useRef<HTMLInputElement>(null);
     const nameRef = useRef<HTMLTextAreaElement>(null);
     const ageRef = useRef<HTMLTextAreaElement>(null);
@@ -28,6 +29,7 @@ const FireStoreWriteScreen = () => {
        catch (error: unknown) {
             console.log(error);
         }
+        setUploaded(true)
         setIsLoading(false);
     }
     return (
@@ -88,6 +90,13 @@ const FireStoreWriteScreen = () => {
                 colour = "green"
             >Submit Text</AuthButton>
         </div>
+            <div className='mb-4 pb-5 '>
+                        <span
+                            className={`${uploaded ? 'block' : 'hidden'} text-lg font-bold text-green-700  bottom-0 right-0`}>
+                        User data uploaded successfully
+
+                    </span>
+            </div>
         </div>
     )
 }

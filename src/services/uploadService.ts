@@ -1,4 +1,4 @@
-import { FirebaseConfig } from "../config/firebase-config.ts";
+import {FirebaseConfig} from "../config/firebase-config.ts";
 
 export const uploadImage = async (file: File): Promise<string> => {
     const formData = new FormData();
@@ -16,7 +16,7 @@ export const uploadImage = async (file: File): Promise<string> => {
             throw new Error(errorData.message || `Upload failed with status ${response.status}`);
         }
 
-        const { data } = await response.json();
+        const {data} = await response.json();
         return data;
     } catch (error) {
         console.error('Upload failed:', error);
