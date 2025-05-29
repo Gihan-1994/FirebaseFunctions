@@ -4,16 +4,25 @@ import AuthScreen from './screens/AuthScreen' ;
 import ImageUploadScreen from './screens/ImageUploadScreen' ;
 import FireStoreWriteScreen from './screens/FireStoreWriteScreen' ;
 
+
+
 function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path='/' element={<HomeScreen/>}/>
-        <Route path='/AuthScreen' element={<AuthScreen/>}/>
-        <Route path='/ImageUploadScreen' element={<ImageUploadScreen/>}/>
-        <Route path='/FireStoreWriteScreen' element={<FireStoreWriteScreen/>}/>
-      </Routes>
-    </Router>
-  )
+
+    return (
+
+        <section className='w-screen h-screen bg-gradient-to-r from-green-500 to-green-900'>
+            <Router>
+                <Routes>
+                    <Route path='/' element={<HomeScreen/>}/>
+                    <Route path='/AuthScreen' element={<AuthScreen/>}/>
+                    <Route path='/ImageUploadScreen' element={<ImageUploadScreen/>}/>
+                    <Route path='/FireStoreWriteScreen' element={<FireStoreWriteScreen/>}/>
+                </Routes>
+            </Router>
+        </section>
+
+
+
+    )
 }
 export default App;
