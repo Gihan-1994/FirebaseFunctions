@@ -23,6 +23,8 @@ const AuthScreen = () => {
         try {
             setIsLoading(true);
             setError('');
+            googleProvider.setCustomParameters({ display: 'popup' })
+
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
            // setSuccessMessage(`Google sign-in successful: ${user.email}`);
