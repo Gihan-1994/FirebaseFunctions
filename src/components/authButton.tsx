@@ -19,18 +19,18 @@ const AuthButton: React.FC<AuthButtonProps> = ({
                                                    variant = 'primary',
                                                    colour = 'blue',
                                                }) => {
-    const baseClasses = 'px-4 py-2 rounded-md font-medium transition-all duration-200 flex items-center justify-center';
+    const baseClasses = 'px-4 py-2 rounded-md font-medium transition shadow-md ease-in-out delay-150 hover:-translate hover:scale-110 duration-200 flex items-center justify-center  focus:outline-none focus:ring-2 focus:ring-offset-4  ';
 
     const variantColours = {
 
-        green: 'bg-green-400  hover:bg-green-700 focus:ring-green-500 text-green-800 ',
-        blue: 'bg-blue-400  hover:bg-blue-700 focus:ring-blue-500 text-blue-800 ',
+        green: 'bg-green-400  hover:bg-green-700 focus:ring-green-800 text-green-800 ',
+        blue: 'bg-blue-400  hover:bg-blue-700 focus:ring-indigo-800 text-blue-800 ',
     };
 
     const variantClasses = {
-        primary: 'bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2',
-        secondary:`${variantColours[colour]} text-white focus:ring-2  focus:ring-offset-2` ,
-        outline: 'border border-indigo-600 text-indigo-600 hover:bg-indigo-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2',
+        primary: 'bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-2  ',
+        secondary:`${variantColours[colour]} text-white focus:ring-2  ` ,
+        outline: 'border border-indigo-600 text-indigo-600 hover:bg-indigo-50 focus:ring-2 focus:ring-indigo-500 ',
         danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2',
     };
 

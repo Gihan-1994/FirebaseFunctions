@@ -3,7 +3,10 @@ import AuthButton from "../components/authButton.tsx";
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import {auth, googleProvider, facebookProvider} from "../config/firebase-config.ts";
 import {useNavigate} from "react-router-dom";
-import {signInWithPopup, GoogleAuthProvider, FacebookAuthProvider} from "firebase/auth";
+import {signInWithPopup, FacebookAuthProvider} from "firebase/auth";
+import {FirebaseError} from "firebase/app";
+
+//import { signInWithRedirect, getRedirectResult } from "firebase/auth";
 
 
 const AuthScreen = () => {
@@ -18,25 +21,32 @@ const AuthScreen = () => {
     const [facebookEmail, setFacebookEmail] = useState<string | null>('');
 
 
-
     const handleGoogleSignIn = async () => {
         try {
             setIsLoading(true);
             setError('');
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
-           // setSuccessMessage(`Google sign-in successful: ${user.email}`);
-            setIsAuthenticated(true);
-            return user;
-        } catch (error: any) {
+            const email = user.email;
+            setGoogleEmail(email);
+            window.alert(`Signed in Successfully as ${email}!`);
+
+        } catch (error: unknown) {
             console.error("Google Sign-In Error:", error);
             // Only show error if it's not a user cancellation
-            if (error.code !== 'auth/popup-closed-by-user') {
+            if (error instanceof FirebaseError && error.code === 'auth/popup-blocked') {
+                console.log('Popup blocked, trying redirect...');
+                // Fallback to redirect
+                //await signInWithRedirect(auth, googleProvider);
+            } else if (error instanceof FirebaseError && error.code !== 'auth/popup-closed-by-user') {
                 setError('Google sign-in failed. Please try again.');
+            } else {
+                console.error("Sign-in error:", error);
             }
             return null;
         } finally {
             setIsLoading(false);
+
         }
     };
 
@@ -71,7 +81,8 @@ const AuthScreen = () => {
     // };
 
 
-    const handleFacebookSignIn =async () => {
+    const handleFacebookSignIn = async () => {
+        setIsLoading(true);
         signInWithPopup(auth, facebookProvider)
             .then((result) => {
                 // The signed-in user info.
@@ -80,9 +91,10 @@ const AuthScreen = () => {
                 // This gives you a Facebook Access Token. You can use it to access the Facebook API.
                 const credential = FacebookAuthProvider.credentialFromResult(result);
                 const accessToken = credential?.accessToken;
+                console.log(accessToken);
                 setFacebookEmail(user.email);
                 console.log(facebookEmail);
-
+                setIsAuthenticated(true);
                 // IdP data available using getAdditionalUserInfo(result)
                 // ...
             })
@@ -100,7 +112,10 @@ const AuthScreen = () => {
                 console.log(credential);
 
                 // ...
+            }).finally(() => {
+                setIsLoading(false);
             });
+
     }
 
     const handleSubmit = () => {
@@ -118,7 +133,9 @@ const AuthScreen = () => {
 
             }).catch((error: Error) => {
                 throw new Error(`user signup failed with error: ${error}`);
-            });
+            }).finally(() => {
+                setIsLoading(false);
+            })
         }
         // Perform authentication logic here
         console.log('Email:', email);
@@ -131,7 +148,7 @@ const AuthScreen = () => {
         }
     }, [isAuthenticated, navigate]);
 
-    const handleClar = () => {
+    const handleClear = () => {
         setEmail('');
         setPassword('');
         setConfirmPassword('');
@@ -140,7 +157,7 @@ const AuthScreen = () => {
 
     return (
         <div className='Relative'>
-            <div className='w-full flex flex-col justify-center items-center  gap-5 py-10'>
+            <div className='relative w-full flex flex-col justify-center items-center  gap-8 py-10'>
                 <div
                     className='w-1/2 h-1/4 p-5 px-20 flex flex-row gap-x-10 border-2 justify-between items-center bg-blue-200'>
                     <h2 className='text-2xl font-bold font-sans bg-gradient-to-r from-indigo-300 to-purple-300 py-2 px-2 rounded-2xl w-1/3 text-center '>E-mail</h2>
@@ -179,16 +196,15 @@ const AuthScreen = () => {
                     {/* Error Message */}
                     {error && (
                         <div className='w-1/2 px-20'>
-                        <span className='text-sm font-bold text-red-600 bg-red-100 px-3 py-2 rounded-md block'>
-                            {error}
-                        </span>
+                            <span className='text-sm font-bold text-red-600 bg-red-100 px-3 py-2 rounded-md block'>
+                                {error}
+                            </span>
                         </div>
                     )}
 
 
-
                 </div>
-                <div className='relative w-1/2 h-1/4 p-5 px-20 gap-x-5 flex flex-row justify-between items-center '>
+                <div className=' w-1/2 h-1/4 p-5 px-20 gap-x-5 flex flex-row justify-between items-center '>
                     <AuthButton
                         type="button"
                         disabled={false}
@@ -231,16 +247,20 @@ const AuthScreen = () => {
                         loading={false}
                         variant="primary"
                         onClick={() => {
-                            handleClar()
+                            handleClear()
                         }}
                     >Cancel </AuthButton>
-                    <span
-                        className={`${googleEmail || facebookEmail ? 'block' : 'hidden'} text-sm font-bold text-green-700 absolute bottom-0 right-0`}>
+
+
+                </div>
+                <div className='mb-4 pb-5 '>
+                        <span
+                            className={`${googleEmail || facebookEmail ? 'block' : 'hidden'} text-lg font-bold text-green-700  bottom-0 right-0`}>
                         {googleEmail ? `New Google email: ` : `New Facebook email: `}
-                        <span className='text-amber-900'>
-                         {googleEmail || facebookEmail}
+                            <span className='text-amber-900'>
+                            {googleEmail || facebookEmail}
                         </span> added to firebase database
-                </span>
+                    </span>
                 </div>
             </div>
 
